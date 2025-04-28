@@ -1,0 +1,43 @@
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    stop_grace_period: 3s
+    container_name: php
+    network_mode: host
+    volumes:
+      - ./content:/var/www/html/
+      - ./content/uploaded:/var/www/html/uploaded
+
+    command: >
+      sh -c "composer install && 
+      symfony console cache:clear && 
+      symfony server:start --no-tls --port=8000"
+
+    tty: true
+
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile_db
+      args:
+        UID: 1000
+
+    container_name: postgres_db
+    restart: always
+    network_mode: host
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+    user: "postgres:postgres"
+
+  adminer:
+    image: adminer
+    depends_on:
+      - db
+    restart: always
+    network_mode: host

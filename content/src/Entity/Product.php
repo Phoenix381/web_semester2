@@ -2,36 +2,33 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
-class User
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
+class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column]
+    private ?\DateTime $date = null;
+
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $pass = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $mail = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $phone = null;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
 
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'owner', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $reviews;
 
     public function __construct()
@@ -42,6 +39,18 @@ class User
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getDate(): ?\DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTime $date): static
+    {
+        $this->date = $date;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -56,38 +65,14 @@ class User
         return $this;
     }
 
-    public function getPass(): ?string
+    public function getDescription(): ?string
     {
-        return $this->pass;
+        return $this->description;
     }
 
-    public function setPass(string $pass): static
+    public function setDescription(string $description): static
     {
-        $this->pass = $pass;
-
-        return $this;
-    }
-
-    public function getMail(): ?string
-    {
-        return $this->mail;
-    }
-
-    public function setMail(string $mail): static
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): static
-    {
-        $this->phone = $phone;
+        $this->description = $description;
 
         return $this;
     }
@@ -104,7 +89,7 @@ class User
     {
         if (!$this->reviews->contains($review)) {
             $this->reviews->add($review);
-            $review->setOwner($this);
+            $review->setProduct($this);
         }
 
         return $this;
@@ -114,8 +99,8 @@ class User
     {
         if ($this->reviews->removeElement($review)) {
             // set the owning side to null (unless already changed)
-            if ($review->getOwner() === $this) {
-                $review->setOwner(null);
+            if ($review->getProduct() === $this) {
+                $review->setProduct(null);
             }
         }
 

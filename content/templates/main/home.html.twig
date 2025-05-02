@@ -1,33 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Product List{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-
-    .example-wrapper {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    table {
-        max-width: 600px;
-    }
-
-    .table-row {
-        width: 300px;
-    }
-</style>
-
-<div class="example-wrapper">
-
-    <!-- Main Content -->
-    <div class="container mt-4">
-        <!--     -->
+<div class="container mt-4">
+    <h1 class="mb-4">Products</h1>
+    
+    <div class="row">
+        {% for product in products %}
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <h2>{{ product.name }}</h2>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ product.description }}</p>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                    <a href="{{ path('product_show', {'id': product.id}) }}" 
+                       class="btn btn-primary btn-sm">
+                        View Product
+                    </a>
+                    <span class="badge bg-secondary">
+                        {{ product.reviews|length }} review{% if product.reviews|length != 1 %}s{% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">No products found</div>
+        </div>
+        {% endfor %}
     </div>
-
 </div>
 {% endblock %}

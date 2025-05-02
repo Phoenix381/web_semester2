@@ -31,9 +31,15 @@ services:
 
     user: "postgres:postgres"
 
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   adminer:
     image: adminer
     depends_on:
       - db
     restart: always
     network_mode: host
+
+volumes:
+  pgdata:

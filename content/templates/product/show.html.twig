@@ -35,24 +35,27 @@
             {% endif %}
 
             <!-- Reviews List -->
-            <h4>Отзывы ({{ product.reviews|length }})</h4>
-            <ul class="list-group">
+            <h4 class="mt-4">Отзывы ({{ product.reviews|length }})</h4>
+            <div class="reviews-container">
                 {% for review in product.reviews %}
-                    <li class="list-group-item">
-                        <div class="d-flex justify-content-between">
-                            <div>{{ review.content }}</div>
-                            <small class="text-muted">
-                                {% if review.owner %}
-                                    {{ review.owner.username }}
-                                {% endif %}
-
-                            </small>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end mb-2">
+                            {% if review.owner %}
+                            <small class="text-muted">@{{ review.owner.username }}</small>
+                            {% endif %}
                         </div>
-                    </li>
+                        <p class="card-text">{{ review.content }}</p>
+                    </div>
+                </div>
                 {% else %}
-                    <li class="list-group-item">Пока нет отзывов</li>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text text-muted">Пока нет отзывов</p>
+                    </div>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
 </div>

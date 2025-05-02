@@ -19,17 +19,17 @@
                 <div class="card-footer bg-white d-flex justify-content-between align-items-center">
                     <a href="{{ path('product_show', {'id': product.id}) }}" 
                        class="btn btn-primary btn-sm">
-                        View Product
+                        Смотреть
                     </a>
                     <span class="badge bg-secondary">
-                        {{ product.reviews|length }} review{% if product.reviews|length != 1 %}s{% endif %}
+                        Отзывы: {{ product.reviews|length }}
                     </span>
                 </div>
             </div>
         </div>
         {% else %}
         <div class="col-12">
-            <div class="alert alert-info">No products found</div>
+            <div class="alert alert-info">Товары не найдены!</div>
         </div>
         {% endfor %}
     </div>

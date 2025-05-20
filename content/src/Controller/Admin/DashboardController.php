@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 use Symfony\Component\HttpFoundation\Response;
 
+use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\Review;
 
@@ -29,13 +30,14 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Html');
+            ->setTitle('Админ-панель');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linktoRoute('Back to the website', 'fas fa-home', 'home');
-        yield MenuItem::linkToCrud('Products', 'fas fa-shopping-cart', Product::class);
-        yield MenuItem::linkToCrud('Reviews', 'fas fa-comments', Review::class);
+        yield MenuItem::linktoRoute('Вернуться на главную', 'fas fa-home', 'home');
+        yield MenuItem::linkToCrud('Пользователи', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Товары', 'fas fa-shopping-cart', Product::class);
+        yield MenuItem::linkToCrud('Обзоры', 'fas fa-comments', Review::class);
     }
 }
